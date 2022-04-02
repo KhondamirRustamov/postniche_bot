@@ -9,18 +9,6 @@ TOKEN = bot_token
 bot = telegram.Bot(token=TOKEN)
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tmp.db'
-
-db = SQLAlchemy(app)
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text)
-    chat = db.Column(db.Text)
-    mode = db.Column(db.Text, default = 'nothing')
-
-    def __repr__(self):
-        return '<Flora %r>' % self.id
 
 
 @app.route('/{}'.format(TOKEN), methods=['POST'])
@@ -67,10 +55,10 @@ def respond():
                    bot_help = "Ценопопуляция стареющая, Δ=%s, ω=%s" % (str(Delta), str(Omega))  # stareyushiy
                else:
                    bot_help = "Ошибка! Дельта и Омега числа меньше 1"
-         except:
+           except:
                bot_help = '''Общее количество особей не совпадает с количеством введенных данных(сумма
                            онтогенетических состояний не равна введеному количеству всех особей)'''
-         bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)
+           bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)
    return 'ok'
 
 
@@ -82,9 +70,6 @@ def set_webhook():
     else:
         return "webhook setup failed"
 
-@app.route('/')
-def index():
-    return .
 
 if __name__ == '__main__':
     app.run(debug=True)
