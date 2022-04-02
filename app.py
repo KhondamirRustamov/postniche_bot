@@ -1,7 +1,6 @@
 from flask import Flask, request, render_template, redirect
 import telegram
 from credentials import bot_token, URL
-from flask_sqlalchemy import SQLAlchemy
 
 global bot
 global TOKEN
