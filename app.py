@@ -35,18 +35,20 @@ def respond():
    text = update.message.text.encode('utf-8').decode()
    # for debugging purposes only
    print("got text message :", text)
-   
-   user = User.query.get_or_404(chat=str(chat_id))
-   if user:
-       pass
-   else:
-       user = User(chat=chat_id,
-                   user=user_id)
-       try:
-           db.session.add(user)
-           db.session.commit()
-       except:
-           print('no')
+   try:
+       user = User.query.get(chat=str(chat_id))
+       if user:
+           pass
+       else:
+           user = User(chat=chat_id,
+                       user=user_id)
+           try:
+               db.session.add(user)
+               db.session.commit()
+           except:
+               print('no')
+   except:
+        pass
 
    # the first time you chat with the bot AKA the welcoming message
    if text == "/start":
