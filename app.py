@@ -2,7 +2,6 @@ from flask import Flask, request, render_template, redirect
 import telegram
 from credentials import bot_token, URL
 from flask_sqlalchemy import SQLAlchemy
-from random import randint
 
 global bot
 global TOKEN
@@ -14,7 +13,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tmp.db'
 
 db = SQLAlchemy(app)
 
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)
@@ -23,10 +21,6 @@ class User(db.Model):
 
     def __repr__(self):
         return '<Flora %r>' % self.id
-
-
-delta_coef=[0.0025, 0.0067, 0.0180, 0.0474, 0.1192, 0.2689, 0.5, 0.7311, 0.8808, 0.8808, 0.9820]
-omega_coef=[0.0099, 0.0266, 0.0707, 0.1807, 0.4200, 0.7864, 1.0, 0.7864, 0.4200, 0.1807, 0.0707]
 
 
 @app.route('/{}'.format(TOKEN), methods=['POST'])
@@ -100,6 +94,8 @@ Agar bunda ham izlash natija bermagan bo'lsa, va siz ushbu tur O'zbekiston flora
         if user.mode == 'onto':
             parameters = text.split(' ')
             try:
+                delta_coef = [0.0025, 0.0067, 0.0180, 0.0474, 0.1192, 0.2689, 0.5, 0.7311, 0.8808, 0.8808, 0.9820]
+                omega_coef = [0.0099, 0.0266, 0.0707, 0.1807, 0.4200, 0.7864, 1.0, 0.7864, 0.4200, 0.1807, 0.0707]
                 Delta = sum(i * m for i, m in zip(parameters, delta_coef)) / sum(parameters)
                 Omega = sum(i * m for i, m in zip(parameters, omega_coef)) / sum(parameters)
                 if Omega < 0.60 and Delta < 0.35:
