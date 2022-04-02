@@ -35,12 +35,10 @@ def respond():
    text = update.message.text.encode('utf-8').decode()
    # for debugging purposes only
    print("got text message :", text)
-   users = User.query.all()
-   a = 0
-   for i in users:
-       if str(chat_id) in str(i.chat):
-           a = 1
-   if a == 0:
+   user = User.query.get(chat=str(chat_id))
+   if user:
+       pass
+   else:
        user = User(chat=chat_id,
                    user=user_id)
        try:
