@@ -35,20 +35,6 @@ def respond():
    text = update.message.text.encode('utf-8').decode()
    # for debugging purposes only
    print("got text message :", text)
-   try:
-       user1 = User.query.get(chat=str(chat_id))
-       if user:
-           pass
-       else:
-           user1 = User(chat=chat_id,
-                       name=user_id)
-           try:
-               db.session.add(user1)
-               db.session.commit()
-           except:
-               print('no')
-   except:
-        pass
 
    # the first time you chat with the bot AKA the welcoming message
    if text == "/start":
@@ -58,29 +44,9 @@ def respond():
        # send the welcoming message
        bot.sendMessage(chat_id=chat_id, text=bot_welcome, reply_to_message_id=msg_id)
  
-   elif text == "/onto":
-       user1 = User.query.get(chat=chat_id, name=user_id)
-       user1.mode = 'onto'
-       try:
-           db.session.commit()
-       except:
-           print('no')
-       bot_help = 'Rejim: ontogenetik parametrlarni tahlili'
-       bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)
-
-   elif text == "/morpho":
-       user1 = User.query.get(chat=chat_id, name=user_id)
-       user1.mode = 'morpho'
-       try:
-           db.session.commit()
-       except:
-           print('no')
-       bot_help = 'Rejim: morfologik parametrlarni tahlili'
-       bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)
    
    else:
-       user1 = User.query.get(chat=chat_id, name=user_id)
-       if user1.mode == 'onto':
+       if True:
            parameters = text.split(' ')
            try:
                delta_coef = [0.0025, 0.0067, 0.0180, 0.0474, 0.1192, 0.2689, 0.5, 0.7311, 0.8808, 0.8808, 0.9820]
@@ -118,27 +84,7 @@ def set_webhook():
 
 @app.route('/')
 def index():
-    users = User.query.all()
-    return render_template('users.html', users=users)
+    return .
 
-
-@app.route('/send', methods=['POST', 'GET'])
-def send():
-    if request.method == 'POST':
-        TOKEN = bot_token
-        bot = telegram.Bot(token=TOKEN)
-        message = str(request.form['message'])
-        users = User.query.all()
-        for i in users:
-            try:
-                chat_id = i.chat
-                bot.sendMessage(chat_id=chat_id, text=message)
-            except:
-                pass
-        return redirect("/")
-    else:
-        return render_template("send.html")
-   
-   
 if __name__ == '__main__':
     app.run(debug=True)
