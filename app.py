@@ -59,7 +59,7 @@ def respond():
                bot_help = '''Общее количество особей не совпадает с количеством введенных данных(сумма
                            онтогенетических состояний не равна введеному количеству всех особей)'''
            bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)
-   return 'ok'
+    return 'ok'
 
 
 @app.route('/set_webhook', methods=['GET', 'POST'])
