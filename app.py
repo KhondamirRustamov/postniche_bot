@@ -35,7 +35,8 @@ def respond():
    text = update.message.text.encode('utf-8').decode()
    # for debugging purposes only
    print("got text message :", text)
-   user = User.query.get(chat=str(chat_id))
+   
+   user = User.query.get_or_404(chat=str(chat_id))
    if user:
        pass
    else:
@@ -54,7 +55,7 @@ def respond():
        Assalomu aleykum"""
        # send the welcoming message
        bot.sendMessage(chat_id=chat_id, text=bot_welcome, reply_to_message_id=msg_id)
-   
+   '''  
    elif text == "/onto":
        user = User.query.get(chat=chat_id, user=user_id)
        user.mode = 'onto'
@@ -74,7 +75,7 @@ def respond():
            print('no')
        bot_help = 'Rejim: morfologik parametrlarni tahlili'
        bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)
-    
+   
    else:
        user = User.query.get(chat=chat_id, user=user_id)
        if user.mode == 'onto':
@@ -101,7 +102,7 @@ def respond():
          except:
                bot_help = '''Общее количество особей не совпадает с количеством введенных данных(сумма
                            онтогенетических состояний не равна введеному количеству всех особей)'''
-         bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)
+         bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)'''
    return 'ok'
 
 
