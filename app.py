@@ -36,14 +36,14 @@ def respond():
    # for debugging purposes only
    print("got text message :", text)
    try:
-       user = User.query.get(chat=str(chat_id))
+       user1 = User.query.get(chat=str(chat_id))
        if user:
            pass
        else:
-           user = User(chat=chat_id,
+           user1 = User(chat=chat_id,
                        name=user_id)
            try:
-               db.session.add(user)
+               db.session.add(user1)
                db.session.commit()
            except:
                print('no')
@@ -59,8 +59,8 @@ def respond():
        bot.sendMessage(chat_id=chat_id, text=bot_welcome, reply_to_message_id=msg_id)
  
    elif text == "/onto":
-       user = User.query.get(chat=chat_id, name=user_id)
-       user.mode = 'onto'
+       user1 = User.query.get(chat=chat_id, name=user_id)
+       user1.mode = 'onto'
        try:
            db.session.commit()
        except:
@@ -69,8 +69,8 @@ def respond():
        bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)
 
    elif text == "/morpho":
-       user = User.query.get(chat=chat_id, name=user_id)
-       user.mode = 'morpho'
+       user1 = User.query.get(chat=chat_id, name=user_id)
+       user1.mode = 'morpho'
        try:
            db.session.commit()
        except:
@@ -79,8 +79,8 @@ def respond():
        bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)
    
    else:
-       user = User.query.get(chat=chat_id, name=user_id)
-       if user.mode == 'onto':
+       user1 = User.query.get(chat=chat_id, name=user_id)
+       if user1.mode == 'onto':
            parameters = text.split(' ')
            try:
                delta_coef = [0.0025, 0.0067, 0.0180, 0.0474, 0.1192, 0.2689, 0.5, 0.7311, 0.8808, 0.8808, 0.9820]
