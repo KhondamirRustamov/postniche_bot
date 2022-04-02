@@ -41,7 +41,7 @@ def respond():
            pass
        else:
            user = User(chat=chat_id,
-                       user=user_id)
+                       name=user_id)
            try:
                db.session.add(user)
                db.session.commit()
@@ -57,9 +57,9 @@ def respond():
        Assalomu aleykum"""
        # send the welcoming message
        bot.sendMessage(chat_id=chat_id, text=bot_welcome, reply_to_message_id=msg_id)
-   '''  
+ 
    elif text == "/onto":
-       user = User.query.get(chat=chat_id, user=user_id)
+       user = User.query.get(chat=chat_id, name=user_id)
        user.mode = 'onto'
        try:
            db.session.commit()
@@ -69,7 +69,7 @@ def respond():
        bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)
 
    elif text == "/morpho":
-       user = User.query.get(chat=chat_id, user=user_id)
+       user = User.query.get(chat=chat_id, name=user_id)
        user.mode = 'morpho'
        try:
            db.session.commit()
@@ -79,7 +79,7 @@ def respond():
        bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)
    
    else:
-       user = User.query.get(chat=chat_id, user=user_id)
+       user = User.query.get(chat=chat_id, name=user_id)
        if user.mode == 'onto':
            parameters = text.split(' ')
            try:
@@ -104,7 +104,7 @@ def respond():
          except:
                bot_help = '''Общее количество особей не совпадает с количеством введенных данных(сумма
                            онтогенетических состояний не равна введеному количеству всех особей)'''
-         bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)'''
+         bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)
    return 'ok'
 
 
