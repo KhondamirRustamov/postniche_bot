@@ -9,18 +9,6 @@ TOKEN = bot_token
 bot = telegram.Bot(token=TOKEN)
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tmp.db'
-
-db = SQLAlchemy(app)
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text)
-    chat = db.Column(db.Text)
-    mode = db.Column(db.Text, default = 'nothing')
-
-    def __repr__(self):
-        return '<User %r>' % self.id
 
 
 @app.route('/{}'.format(TOKEN), methods=['POST'])
@@ -34,20 +22,6 @@ def respond():
     user_idd = update.message.chat.username
 
     text = update.message.text.encode('utf-8').decode()
-
-    users = User.query.all()
-    a = 0
-    for i in users:
-        if str(chat_id) in str(i.chat):
-            a = 1
-    if a == 0:
-        user = User(chat=chat_id,
-                    user=user_id)
-        try:
-            db.session.add(user)
-            db.session.commit()
-        except:
-            print('no')
 
     if text == "/start":
         # print the welcoming message
@@ -67,29 +41,7 @@ Agar bunda ham izlash natija bermagan bo'lsa, va siz ushbu tur O'zbekiston flora
         '''
         bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)
 
-    elif text == "/onto":
-        user = User.query.get(chat=chat_id, user=user_id)
-        user.mode = 'onto'
-        try:
-            db.session.commit()
-        except:
-            print('no')
-        bot_help = 'Rejim: ontogenetik parametrlarni tahlili'
-        bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)
-
-    elif text == "/morpho":
-        user = User.query.get(chat=chat_id, user=user_id)
-        user.mode = 'morpho'
-        try:
-            db.session.commit()
-        except:
-            print('no')
-        bot_help = 'Rejim: morfometrik parametrlarni tahlili'
-        bot.sendMessage(chat_id=chat_id, text=bot_help, reply_to_message_id=msg_id)
-
     else:
-        user = User.query.get(chat=chat_id, user=user_id)
-        if user.mode == 'onto':
             parameters = text.split(' ')
             try:
                 delta_coef = [0.0025, 0.0067, 0.0180, 0.0474, 0.1192, 0.2689, 0.5, 0.7311, 0.8808, 0.8808, 0.9820]
@@ -125,30 +77,6 @@ def set_webhook():
         return "webhook setup ok"
     else:
         return "webhook setup failed"
-
-
-@app.route('/')
-def index():
-    users = User.query.all()
-    return render_template('users.html', users=users)
-
-
-@app.route('/send', methods=['POST', 'GET'])
-def send():
-    if request.method == 'POST':
-        TOKEN = bot_token
-        bot = telegram.Bot(token=TOKEN)
-        message = str(request.form['message'])
-        users = User.query.all()
-        for i in users:
-            try:
-                chat_id = i.chat
-                bot.sendMessage(chat_id=chat_id, text=message)
-            except:
-                pass
-        return redirect("/")
-    else:
-        return render_template("send.html")
 
 
 if __name__ == '__main__':
