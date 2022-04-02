@@ -20,7 +20,7 @@ class User(db.Model):
     mode = db.Column(db.Text, default = 'nothing')
 
     def __repr__(self):
-        return '<Flora %r>' % self.id
+        return '<User %r>' % self.id
 
 
 @app.route('/{}'.format(TOKEN), methods=['POST'])
